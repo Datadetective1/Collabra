@@ -2,11 +2,23 @@
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -21,25 +33,41 @@ export default function Navbar() {
 
           {session ? (
             <div className="flex items-center gap-6">
-              <div className="hidden md:flex items-center gap-6">
+              <div className="hidden md:flex items-center gap-5">
                 <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   Dashboard
-                </Link>
-                <Link href="/problems" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  Problems
                 </Link>
                 <Link href="/explore" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   Explore
                 </Link>
-                <Link href="/showcase" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  Showcase
+                <Link href="/bounties" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  Bounties
                 </Link>
                 <Link href="/messages" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   Messages
                 </Link>
-                <Link href="/profile" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
-                  Profile
-                </Link>
+                {/* More dropdown */}
+                <div className="relative" ref={moreRef}>
+                  <button
+                    onClick={() => setMoreOpen(!moreOpen)}
+                    className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1"
+                  >
+                    More
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {moreOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                      <Link href="/problems" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Problems</Link>
+                      <Link href="/showcase" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Showcase</Link>
+                      <Link href="/talent" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Talent</Link>
+                      <Link href="/organizations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Organizations</Link>
+                      <hr className="my-1 border-gray-100" />
+                      <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Profile</Link>
+                    </div>
+                  )}
+                </div>
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
@@ -58,16 +86,11 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-4">
-              <Link href="/showcase" className="text-sm text-gray-600 hover:text-gray-900">
-                Showcase
-              </Link>
-              <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
-                Sign in
-              </Link>
-              <Link
-                href="/register"
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
-              >
+              <Link href="/showcase" className="text-sm text-gray-600 hover:text-gray-900">Showcase</Link>
+              <Link href="/bounties" className="text-sm text-gray-600 hover:text-gray-900">Bounties</Link>
+              <Link href="/talent" className="text-sm text-gray-600 hover:text-gray-900">Talent</Link>
+              <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">Sign in</Link>
+              <Link href="/register" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
                 Join with Invite
               </Link>
             </div>
@@ -77,10 +100,13 @@ export default function Navbar() {
         {menuOpen && session && (
           <div className="md:hidden pb-4 space-y-2">
             <Link href="/dashboard" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Dashboard</Link>
-            <Link href="/problems" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Problems</Link>
             <Link href="/explore" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Explore</Link>
-            <Link href="/showcase" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Showcase</Link>
+            <Link href="/bounties" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Bounties</Link>
             <Link href="/messages" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Messages</Link>
+            <Link href="/problems" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Problems</Link>
+            <Link href="/showcase" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Showcase</Link>
+            <Link href="/talent" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Talent</Link>
+            <Link href="/organizations" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Organizations</Link>
             <Link href="/profile" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Profile</Link>
           </div>
         )}

@@ -15,6 +15,8 @@ model User {
   role         String   @default("builder")
   points       Int      @default(0)
   bio          String   @default("")
+  skills       String   @default("")
+  available    Boolean  @default(true)
   createdAt    DateTime @default(now())
 
   inviteCodeUsed   InviteCode?    @relation("UsedBy")
@@ -25,6 +27,8 @@ model User {
   pointLogs        PointLog[]
   messagesSent     Message[]      @relation("SentMessages")
   messagesReceived Message[]      @relation("ReceivedMessages")
+  orgMemberships   OrgMember[]
+  bountySubmissions BountySubmission[]
 }
 
 model InviteCode {
@@ -41,17 +45,24 @@ model InviteCode {
 }
 
 model Problem {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  category    String   @default("education")
-  status      String   @default("open")
-  createdAt   DateTime @default(now())
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  category      String   @default("education")
+  status        String   @default("open")
+  bountyAmount  Int      @default(0)
+  bountyStatus  String   @default("none")
+  sponsorName   String   @default("")
+  createdAt     DateTime @default(now())
 
   creatorId String
   creator   User   @relation(fields: [creatorId], references: [id])
 
-  project Project?
+  orgId   String?
+  org     Organization? @relation(fields: [orgId], references: [id])
+
+  project           Project?
+  bountySubmissions  BountySubmission[]
 }
 
 model Project {
@@ -135,6 +146,47 @@ model Message {
 
   projectId  String?
   project    Project?  @relation(fields: [projectId], references: [id])
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String   @default("")
+  tier        String   @default("free")
+  logo        String   @default("")
+  website     String   @default("")
+  createdAt   DateTime @default(now())
+
+  members  OrgMember[]
+  problems Problem[]
+}
+
+model OrgMember {
+  id       String   @id @default(cuid())
+  role     String   @default("member")
+  joinedAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  orgId String
+  org   Organization @relation(fields: [orgId], references: [id])
+
+  @@unique([userId, orgId])
+}
+
+model BountySubmission {
+  id          String   @id @default(cuid())
+  content     String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id])
+
+  submitterId String
+  submitter   User   @relation(fields: [submitterId], references: [id])
 }
 
 model WaitlistEntry {

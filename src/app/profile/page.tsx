@@ -12,6 +12,8 @@ interface Profile {
   role: string;
   points: number;
   bio: string;
+  skills: string;
+  available: boolean;
   createdAt: string;
   teamMemberships: {
     role: string;
@@ -91,6 +93,19 @@ export default function ProfilePage() {
               <span className="text-sm text-gray-400 capitalize">{profile.role.replace("_", " ")}</span>
             </div>
             {profile.bio && <p className="text-gray-600 mt-3">{profile.bio}</p>}
+            {profile.skills && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {profile.skills.split(",").map((s) => s.trim()).filter(Boolean).map((skill) => (
+                  <span key={skill} className="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full">{skill}</span>
+                ))}
+              </div>
+            )}
+            {profile.available && (
+              <span className="inline-flex items-center gap-1.5 text-xs text-green-600 mt-2">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                Available for projects
+              </span>
+            )}
           </div>
         </div>
 

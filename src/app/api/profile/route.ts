@@ -19,6 +19,8 @@ export async function GET() {
       role: true,
       points: true,
       bio: true,
+      skills: true,
+      available: true,
       createdAt: true,
       teamMemberships: {
         include: {
