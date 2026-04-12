@@ -66,3 +66,36 @@ export async function POST(
 
   return Response.json({ error: "Invalid action" }, { status: 400 });
 }
+
+// Update solution links
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const userId = (session.user as { id: string }).id;
+
+  const membership = await prisma.teamMember.findUnique({
+    where: { userId_projectId: { userId, projectId: id } },
+  });
+  if (!membership) {
+    return Response.json({ error: "Not a team member" }, { status: 403 });
+  }
+
+  const { demoUrl, repoUrl, description } = await request.json();
+  const project = await prisma.project.update({
+    where: { id },
+    data: {
+      ...(demoUrl !== undefined && { demoUrl }),
+      ...(repoUrl !== undefined && { repoUrl }),
+      ...(description !== undefined && { description }),
+    },
+  });
+
+  return Response.json(project);
+}

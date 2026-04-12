@@ -8,6 +8,9 @@ interface Project {
   id: string;
   name: string;
   status: string;
+  demoUrl: string;
+  repoUrl: string;
+  description: string;
   problem: { title: string; description: string; category: string; creator: { name: string } };
   teamMembers: {
     id: string;
@@ -38,6 +41,8 @@ export default function ProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [newTask, setNewTask] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
+  const [editingLinks, setEditingLinks] = useState(false);
+  const [linkForm, setLinkForm] = useState({ demoUrl: "", repoUrl: "", description: "" });
 
   const userId = (session?.user as { id?: string })?.id;
 
@@ -58,6 +63,17 @@ export default function ProjectPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "join" }),
     });
+    loadProject();
+  }
+
+  async function saveSolutionLinks(e: React.FormEvent) {
+    e.preventDefault();
+    await fetch(`/api/projects/${params.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(linkForm),
+    });
+    setEditingLinks(false);
     loadProject();
   }
 
@@ -128,6 +144,96 @@ export default function ProjectPage() {
             </button>
           )}
         </div>
+
+        {/* Solution description */}
+        {project.description && (
+          <div className="mt-4 bg-indigo-50 border border-indigo-100 rounded-lg p-4">
+            <p className="text-sm font-medium text-indigo-900 mb-1">The Solution</p>
+            <p className="text-sm text-indigo-700">{project.description}</p>
+          </div>
+        )}
+
+        {/* Solution links */}
+        {(project.demoUrl || project.repoUrl) && (
+          <div className="mt-4 flex flex-wrap gap-3">
+            {project.demoUrl && (
+              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-100 transition">
+                Live Demo
+              </a>
+            )}
+            {project.repoUrl && (
+              <a href={project.repoUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
+                Source Code
+              </a>
+            )}
+          </div>
+        )}
+
+        {/* Edit solution links (team members only) */}
+        {isMember && (
+          <div className="mt-4">
+            {!editingLinks ? (
+              <button
+                onClick={() => {
+                  setLinkForm({
+                    demoUrl: project.demoUrl || "",
+                    repoUrl: project.repoUrl || "",
+                    description: project.description || "",
+                  });
+                  setEditingLinks(true);
+                }}
+                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+              >
+                Edit Solution Links
+              </button>
+            ) : (
+              <form onSubmit={saveSolutionLinks} className="space-y-3 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Solution Description</label>
+                  <textarea
+                    value={linkForm.description}
+                    onChange={(e) => setLinkForm((p) => ({ ...p, description: e.target.value }))}
+                    rows={2}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none"
+                    placeholder="Describe what was built..."
+                  />
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Demo URL</label>
+                    <input
+                      type="url"
+                      value={linkForm.demoUrl}
+                      onChange={(e) => setLinkForm((p) => ({ ...p, demoUrl: e.target.value }))}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                      placeholder="https://demo.example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Repo URL</label>
+                    <input
+                      type="url"
+                      value={linkForm.repoUrl}
+                      onChange={(e) => setLinkForm((p) => ({ ...p, repoUrl: e.target.value }))}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                      placeholder="https://github.com/..."
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
+                    Save
+                  </button>
+                  <button type="button" onClick={() => setEditingLinks(false)} className="text-sm text-gray-500 hover:text-gray-700 px-4 py-2">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="grid lg:grid-cols-4 gap-6">

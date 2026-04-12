@@ -82,6 +82,12 @@ export default function Home() {
             >
               Explore Projects
             </Link>
+            <Link
+              href="/showcase"
+              className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition"
+            >
+              View Showcase
+            </Link>
             <a
               href="#request-invite"
               className="border border-indigo-300 text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition"

@@ -23,6 +23,8 @@ model User {
   teamMemberships  TeamMember[]
   tasksAssigned    Task[]
   pointLogs        PointLog[]
+  messagesSent     Message[]      @relation("SentMessages")
+  messagesReceived Message[]      @relation("ReceivedMessages")
 }
 
 model InviteCode {
@@ -56,8 +58,11 @@ model Project {
   id        String   @id @default(cuid())
   name      String
   status    String   @default("active")
-  isPublic  Boolean  @default(true)
-  createdAt DateTime @default(now())
+  isPublic     Boolean  @default(true)
+  demoUrl      String   @default("")
+  repoUrl      String   @default("")
+  description  String   @default("")
+  createdAt    DateTime @default(now())
 
   problemId String  @unique
   problem   Problem @relation(fields: [problemId], references: [id])
@@ -65,6 +70,7 @@ model Project {
   teamMembers TeamMember[]
   tasks       Task[]
   milestones  Milestone[]
+  messages    Message[]
 }
 
 model TeamMember {
@@ -113,6 +119,22 @@ model PointLog {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  projectId  String?
+  project    Project?  @relation(fields: [projectId], references: [id])
 }
 
 model WaitlistEntry {

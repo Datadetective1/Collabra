@@ -31,6 +31,12 @@ export default function Navbar() {
                 <Link href="/explore" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   Explore
                 </Link>
+                <Link href="/showcase" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  Showcase
+                </Link>
+                <Link href="/messages" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                  Messages
+                </Link>
                 <Link href="/profile" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   Profile
                 </Link>
@@ -52,6 +58,9 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-4">
+              <Link href="/showcase" className="text-sm text-gray-600 hover:text-gray-900">
+                Showcase
+              </Link>
               <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
                 Sign in
               </Link>
@@ -70,6 +79,8 @@ export default function Navbar() {
             <Link href="/dashboard" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Dashboard</Link>
             <Link href="/problems" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Problems</Link>
             <Link href="/explore" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Explore</Link>
+            <Link href="/showcase" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Showcase</Link>
+            <Link href="/messages" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Messages</Link>
             <Link href="/profile" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Profile</Link>
           </div>
         )}
