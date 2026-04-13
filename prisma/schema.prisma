@@ -82,6 +82,7 @@ model Project {
   tasks       Task[]
   milestones  Milestone[]
   messages    Message[]
+  listing     SolutionListing?
 }
 
 model TeamMember {
@@ -187,6 +188,36 @@ model BountySubmission {
 
   submitterId String
   submitter   User   @relation(fields: [submitterId], references: [id])
+}
+
+model SolutionListing {
+  id             String   @id @default(cuid())
+  published      Boolean  @default(false)
+  priceMonthly   Int      @default(0)
+  tagline        String   @default("")
+  features       String   @default("")
+  builderSplit   Int      @default(70)
+  platformSplit  Int      @default(20)
+  creatorSplit   Int      @default(10)
+  totalRevenue   Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  projectId String  @unique
+  project   Project @relation(fields: [projectId], references: [id])
+
+  licenses SolutionLicense[]
+}
+
+model SolutionLicense {
+  id          String   @id @default(cuid())
+  status      String   @default("active")
+  licensee    String
+  email       String
+  orgName     String   @default("")
+  createdAt   DateTime @default(now())
+
+  listingId String
+  listing   SolutionListing @relation(fields: [listingId], references: [id])
 }
 
 model WaitlistEntry {
