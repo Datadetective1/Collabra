@@ -4,9 +4,11 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +26,7 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError(t.auth.invalidCredentials);
       setLoading(false);
     } else {
       router.push("/dashboard");
@@ -35,7 +37,7 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <h1 className="text-2xl font-bold text-gray-900 text-center mb-8">Sign in to Collabra</h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center mb-8">{t.auth.loginTitle}</h1>
 
           {error && (
             <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-6">{error}</div>
@@ -43,7 +45,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.auth.email}</label>
               <input
                 type="email"
                 value={email}
@@ -54,7 +56,7 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.auth.password}</label>
               <input
                 type="password"
                 value={password}
@@ -68,14 +70,14 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 transition"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? t.auth.signingIn : t.auth.login}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Don&apos;t have an account?{" "}
+            {t.auth.noAccount}{" "}
             <Link href="/register" className="text-indigo-600 hover:text-indigo-700 font-medium">
-              Join with invite code
+              {t.common.joinWithInvite}
             </Link>
           </p>
         </div>
