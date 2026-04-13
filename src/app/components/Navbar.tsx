@@ -66,6 +66,7 @@ export default function Navbar() {
                       <Link href="/showcase" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Showcase</Link>
                       <Link href="/talent" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Talent</Link>
                       <Link href="/organizations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Organizations</Link>
+                      <Link href="/hosting" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Hosting</Link>
                       <hr className="my-1 border-gray-100" />
                       <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMoreOpen(false)}>Profile</Link>
                     </div>
@@ -112,6 +113,7 @@ export default function Navbar() {
             <Link href="/showcase" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Showcase</Link>
             <Link href="/talent" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Talent</Link>
             <Link href="/organizations" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Organizations</Link>
+            <Link href="/hosting" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Hosting</Link>
             <Link href="/profile" className="block text-gray-600 hover:text-gray-900 text-sm py-1">Profile</Link>
           </div>
         )}

@@ -200,6 +200,12 @@ model SolutionListing {
   platformSplit  Int      @default(20)
   creatorSplit   Int      @default(10)
   totalRevenue   Int      @default(0)
+  hostingStatus  String   @default("pending")
+  hostingUrl     String   @default("")
+  hostingRegion  String   @default("us-east-1")
+  hostingTier    String   @default("starter")
+  setupDocs      String   @default("")
+  techStack      String   @default("")
   createdAt      DateTime @default(now())
 
   projectId String  @unique
@@ -209,12 +215,18 @@ model SolutionListing {
 }
 
 model SolutionLicense {
-  id          String   @id @default(cuid())
-  status      String   @default("active")
-  licensee    String
-  email       String
-  orgName     String   @default("")
-  createdAt   DateTime @default(now())
+  id            String   @id @default(cuid())
+  status        String   @default("pending")
+  licensee      String
+  email         String
+  orgName       String   @default("")
+  instanceUrl   String   @default("")
+  instanceStatus String  @default("provisioning")
+  accessKey     String   @default("")
+  dataRegion    String   @default("us-east-1")
+  storageUsed   Int      @default(0)
+  monthlyUsage  Int      @default(0)
+  createdAt     DateTime @default(now())
 
   listingId String
   listing   SolutionListing @relation(fields: [listingId], references: [id])
