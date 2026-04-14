@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Project {
   id: string;
@@ -37,6 +38,7 @@ function getReputationLevel(points: number): string {
 
 export default function ProjectPage() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const params = useParams();
   const [project, setProject] = useState<Project | null>(null);
   const [newTask, setNewTask] = useState("");
@@ -102,7 +104,7 @@ export default function ProjectPage() {
   }
 
   if (!project) {
-    return <div className="flex justify-center items-center min-h-[60vh] text-gray-500">Loading...</div>;
+    return <div className="flex justify-center items-center min-h-[60vh] text-gray-500">{t.common.loading}</div>;
   }
 
   const tasksByStatus = {
@@ -112,9 +114,9 @@ export default function ProjectPage() {
   };
 
   const statusColumnStyles: Record<string, { bg: string; dot: string; label: string }> = {
-    todo: { bg: "bg-gray-50", dot: "bg-gray-400", label: "To Do" },
-    in_progress: { bg: "bg-blue-50", dot: "bg-blue-400", label: "In Progress" },
-    done: { bg: "bg-green-50", dot: "bg-green-400", label: "Done" },
+    todo: { bg: "bg-gray-50", dot: "bg-gray-400", label: t.project.todo },
+    in_progress: { bg: "bg-blue-50", dot: "bg-blue-400", label: t.project.inProgress },
+    done: { bg: "bg-green-50", dot: "bg-green-400", label: t.project.done },
   };
 
   return (
@@ -140,7 +142,7 @@ export default function ProjectPage() {
               onClick={joinProject}
               className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
             >
-              Join Team
+              {t.explore.joinTeam}
             </button>
           )}
         </div>
@@ -186,12 +188,12 @@ export default function ProjectPage() {
                 }}
                 className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
               >
-                Edit Solution Links
+                {t.project.editLinks}
               </button>
             ) : (
               <form onSubmit={saveSolutionLinks} className="space-y-3 bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">Solution Description</label>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">{t.project.description}</label>
                   <textarea
                     value={linkForm.description}
                     onChange={(e) => setLinkForm((p) => ({ ...p, description: e.target.value }))}
@@ -202,7 +204,7 @@ export default function ProjectPage() {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">Demo URL</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">{t.project.demoUrl}</label>
                     <input
                       type="url"
                       value={linkForm.demoUrl}
@@ -212,7 +214,7 @@ export default function ProjectPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">Repo URL</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">{t.project.repoUrl}</label>
                     <input
                       type="url"
                       value={linkForm.repoUrl}
@@ -224,10 +226,10 @@ export default function ProjectPage() {
                 </div>
                 <div className="flex gap-2">
                   <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
-                    Save
+                    {t.common.save}
                   </button>
                   <button type="button" onClick={() => setEditingLinks(false)} className="text-sm text-gray-500 hover:text-gray-700 px-4 py-2">
-                    Cancel
+                    {t.common.cancel}
                   </button>
                 </div>
               </form>
@@ -240,7 +242,7 @@ export default function ProjectPage() {
         {/* Task Board */}
         <div className="lg:col-span-3">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Task Board</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.project.tasks}</h2>
 
             {/* Add task form */}
             {isMember && (
@@ -263,7 +265,7 @@ export default function ProjectPage() {
                   type="submit"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
                 >
-                  Add
+                  {t.project.addTask}
                 </button>
               </form>
             )}
@@ -320,7 +322,7 @@ export default function ProjectPage() {
         <div>
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Team ({project.teamMembers.length})
+              {t.project.teamMembers} ({project.teamMembers.length})
             </h2>
             <div className="space-y-3">
               {project.teamMembers.map((tm) => (

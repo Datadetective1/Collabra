@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface BountyProblem {
   id: string;
@@ -38,6 +39,7 @@ function getBountyStatusStyle(status: string) {
 
 export default function BountiesPage() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [bounties, setBounties] = useState<BountyProblem[]>([]);
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ title: "", description: "", category: "general", bountyAmount: "", sponsorName: "" });
@@ -83,19 +85,19 @@ export default function BountiesPage() {
       <section className="bg-gradient-to-br from-amber-600 via-orange-600 to-red-600 text-white">
         <div className="max-w-5xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Bounty Board
+            {t.bounties.title}
           </h1>
           <p className="mt-4 text-lg text-amber-100 max-w-2xl mx-auto">
-            Funded problems waiting for solutions. Build something real, earn real rewards.
+            {t.bounties.subtitle}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-8">
             <div className="text-center">
               <div className="text-3xl font-bold">${totalBountyPool.toLocaleString()}</div>
-              <div className="text-amber-200 text-sm mt-1">Total Bounty Pool</div>
+              <div className="text-amber-200 text-sm mt-1">{t.bounties.totalPool}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{bounties.filter((b) => b.bountyStatus === "open").length}</div>
-              <div className="text-amber-200 text-sm mt-1">Open Bounties</div>
+              <div className="text-amber-200 text-sm mt-1">{t.bounties.activeBounties}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{bounties.filter((b) => b.bountyStatus === "awarded").length}</div>
@@ -108,13 +110,13 @@ export default function BountiesPage() {
       <div className="max-w-5xl mx-auto px-4 py-10 w-full">
         {/* Actions */}
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold text-gray-900">Available Bounties</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t.bounties.activeBounties}</h2>
           {session && (
             <button
               onClick={() => setShowCreate(!showCreate)}
               className="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700 transition"
             >
-              Post a Bounty
+              {t.bounties.createBounty}
             </button>
           )}
         </div>
@@ -122,28 +124,28 @@ export default function BountiesPage() {
         {/* Create form */}
         {showCreate && (
           <form onSubmit={createBounty} className="bg-white rounded-xl border border-gray-200 p-6 mb-8 space-y-4">
-            <h3 className="font-semibold text-gray-900">Post a Funded Problem</h3>
+            <h3 className="font-semibold text-gray-900">{t.bounties.createBounty}</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Problem Title</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t.bounties.problemTitle}</label>
                 <input type="text" required value={form.title} onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Sponsor / Organization</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t.bounties.sponsorName}</label>
                 <input type="text" value={form.sponsorName} onChange={(e) => setForm((p) => ({ ...p, sponsorName: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none"
                   placeholder="Your org name (optional)" />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
+              <label className="block text-xs font-medium text-gray-600 mb-1">{t.bounties.problemDescription}</label>
               <textarea required rows={3} value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none resize-none" />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Category</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t.problems.category}</label>
                 <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none">
                   <option value="health">Health</option>
@@ -155,15 +157,15 @@ export default function BountiesPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Bounty Amount (USD)</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t.bounties.bountyAmount}</label>
                 <input type="number" required min="1" value={form.bountyAmount} onChange={(e) => setForm((p) => ({ ...p, bountyAmount: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none"
                   placeholder="e.g. 5000" />
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="bg-amber-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-amber-700">Post Bounty</button>
-              <button type="button" onClick={() => setShowCreate(false)} className="text-sm text-gray-500 px-4 py-2">Cancel</button>
+              <button type="submit" className="bg-amber-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-amber-700">{t.bounties.createBounty}</button>
+              <button type="button" onClick={() => setShowCreate(false)} className="text-sm text-gray-500 px-4 py-2">{t.common.cancel}</button>
             </div>
           </form>
         )}
@@ -183,7 +185,7 @@ export default function BountiesPage() {
                         {bounty.bountyStatus}
                       </span>
                       {bounty.sponsorName && (
-                        <span className="text-xs text-gray-500">Sponsored by {bounty.sponsorName}</span>
+                        <span className="text-xs text-gray-500">{t.bounties.sponsored} {bounty.sponsorName}</span>
                       )}
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">{bounty.title}</h3>
@@ -217,7 +219,7 @@ export default function BountiesPage() {
                         onClick={() => setSubmitForm({ problemId: bounty.id, content: "" })}
                         className="mt-3 bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700 transition"
                       >
-                        Submit Solution
+                        {t.bounties.submitSolution}
                       </button>
                     )}
                   </div>
@@ -226,17 +228,16 @@ export default function BountiesPage() {
                 {/* Submit solution form */}
                 {submitForm?.problemId === bounty.id && (
                   <form onSubmit={submitSolution} className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
-                    <label className="block text-sm font-medium text-amber-900">Describe your solution</label>
+                    <label className="block text-sm font-medium text-amber-900">{t.bounties.yourSolution}</label>
                     <textarea
                       required rows={4}
                       value={submitForm.content}
                       onChange={(e) => setSubmitForm({ ...submitForm, content: e.target.value })}
                       className="w-full border border-amber-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none resize-none"
-                      placeholder="Explain your approach, link to code/demo, and describe how it solves the problem..."
                     />
                     <div className="flex gap-2">
-                      <button type="submit" className="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700">Submit</button>
-                      <button type="button" onClick={() => setSubmitForm(null)} className="text-sm text-gray-500 px-4 py-2">Cancel</button>
+                      <button type="submit" className="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700">{t.common.submit}</button>
+                      <button type="button" onClick={() => setSubmitForm(null)} className="text-sm text-gray-500 px-4 py-2">{t.common.cancel}</button>
                     </div>
                   </form>
                 )}
@@ -253,25 +254,22 @@ export default function BountiesPage() {
 
         {/* How bounties work */}
         <div className="mt-16 bg-gray-50 rounded-2xl p-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">How Bounties Work</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">{t.bounties.howItWorks}</h3>
           <div className="grid sm:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto">1</div>
-              <h4 className="mt-3 font-semibold text-gray-900">Sponsor Posts</h4>
-              <p className="text-sm text-gray-600 mt-1">Organizations post real problems with funding attached.</p>
+              <p className="text-sm text-gray-600 mt-3">{t.bounties.step1}</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto">2</div>
-              <h4 className="mt-3 font-semibold text-gray-900">Builders Solve</h4>
-              <p className="text-sm text-gray-600 mt-1">Teams or individuals build and submit solutions.</p>
+              <p className="text-sm text-gray-600 mt-3">{t.bounties.step2}</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto">3</div>
-              <h4 className="mt-3 font-semibold text-gray-900">Bounty Awarded</h4>
-              <p className="text-sm text-gray-600 mt-1">Sponsor reviews and awards the bounty to the best solution.</p>
+              <p className="text-sm text-gray-600 mt-3">{t.bounties.step3}</p>
             </div>
           </div>
-          <p className="text-center text-xs text-gray-400 mt-6">Collabra takes a 10% platform fee on awarded bounties.</p>
+          <p className="text-center text-xs text-gray-400 mt-6">{t.bounties.platformFee}</p>
         </div>
       </div>
     </div>

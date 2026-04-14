@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Conversation {
   partnerId: string;
@@ -50,6 +51,7 @@ function timeAgo(dateStr: string): string {
 
 export default function MessagesPage() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const userId = (session?.user as { id?: string })?.id;
 
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -151,12 +153,12 @@ export default function MessagesPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t.messages.title}</h1>
         <button
           onClick={() => setShowNewChat(!showNewChat)}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
         >
-          New Message
+          {t.messages.newMessage}
         </button>
       </div>
 
@@ -167,7 +169,7 @@ export default function MessagesPage() {
             {/* New chat picker */}
             {showNewChat && (
               <div className="border-b border-gray-200 p-3 bg-indigo-50">
-                <p className="text-xs font-medium text-indigo-700 mb-2">Message a teammate:</p>
+                <p className="text-xs font-medium text-indigo-700 mb-2">{t.messages.selectTeammate}</p>
                 <div className="space-y-1 max-h-40 overflow-y-auto">
                   {teammates.length === 0 ? (
                     <p className="text-xs text-gray-500">Join a project to message teammates.</p>
@@ -196,8 +198,7 @@ export default function MessagesPage() {
             <div className="flex-1 overflow-y-auto">
               {conversations.length === 0 && !showNewChat ? (
                 <div className="text-center py-12 px-4">
-                  <p className="text-gray-500 text-sm">No messages yet.</p>
-                  <p className="text-gray-400 text-xs mt-1">Start a conversation with a teammate!</p>
+                  <p className="text-gray-500 text-sm">{t.messages.noConversations}</p>
                 </div>
               ) : (
                 conversations.map((conv) => (
@@ -289,7 +290,7 @@ export default function MessagesPage() {
                       type="text"
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Type a message..."
+                      placeholder={t.messages.typeMessage}
                       className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                     <button
@@ -297,7 +298,7 @@ export default function MessagesPage() {
                       disabled={!newMessage.trim()}
                       className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition"
                     >
-                      Send
+                      {t.messages.send}
                     </button>
                   </div>
                 </form>
@@ -310,8 +311,7 @@ export default function MessagesPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                   </div>
-                  <p className="text-gray-500 font-medium">Select a conversation</p>
-                  <p className="text-gray-400 text-sm mt-1">Or start a new one with a teammate</p>
+                  <p className="text-gray-500 font-medium">{t.messages.selectConversation}</p>
                 </div>
               </div>
             )}

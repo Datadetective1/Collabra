@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface ShowcaseProject {
   id: string;
@@ -27,6 +28,7 @@ function getCategoryColor(category: string) {
 }
 
 export default function ShowcasePage() {
+  const { t } = useTranslation();
   const [projects, setProjects] = useState<ShowcaseProject[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,11 +48,10 @@ export default function ShowcasePage() {
       <section className="bg-gradient-to-br from-gray-900 via-gray-900 to-indigo-900 text-white">
         <div className="max-w-5xl mx-auto px-4 py-20 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Solutions That <span className="text-indigo-400">Ship</span>
+            {t.showcase.title}
           </h1>
           <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-            Real problems. Real teams. Real impact. These projects were built by
-            Collabra teams turning ideas into action.
+            {t.showcase.subtitle}
           </p>
         </div>
       </section>
@@ -58,7 +59,7 @@ export default function ShowcasePage() {
       {/* Projects */}
       <section className="max-w-6xl mx-auto px-4 py-16 w-full">
         {loading ? (
-          <div className="text-center text-gray-500 py-20">Loading projects...</div>
+          <div className="text-center text-gray-500 py-20">{t.common.loading}</div>
         ) : projects.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-gray-500 text-lg">No completed projects yet.</p>
@@ -113,19 +114,19 @@ export default function ShowcasePage() {
                         <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span><strong className="text-gray-900">{doneTasks}</strong> tasks completed</span>
+                        <span><strong className="text-gray-900">{doneTasks}</strong> {t.showcase.tasksCompleted}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span><strong className="text-gray-900">{completedMilestones}</strong> milestones hit</span>
+                        <span><strong className="text-gray-900">{completedMilestones}</strong> {t.showcase.milestonesHit}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <span><strong className="text-gray-900">{project.teamMembers.length}</strong> team members</span>
+                        <span><strong className="text-gray-900">{project.teamMembers.length}</strong> {t.showcase.teamSize}</span>
                       </div>
                     </div>
 
@@ -168,7 +169,7 @@ export default function ShowcasePage() {
                           ))}
                         </div>
                         <span className="text-sm text-gray-500">
-                          Built by {project.teamMembers.map((tm) => tm.user.name).join(", ")}
+                          {t.showcase.builtBy} {project.teamMembers.map((tm) => tm.user.name).join(", ")}
                         </span>
                       </div>
 
@@ -184,7 +185,7 @@ export default function ShowcasePage() {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                             </svg>
-                            Live Demo
+                            {t.showcase.viewDemo}
                           </a>
                         )}
                         {project.repoUrl && (
@@ -197,7 +198,7 @@ export default function ShowcasePage() {
                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                             </svg>
-                            Source Code
+                            {t.showcase.viewCode}
                           </a>
                         )}
                         <Link
@@ -231,7 +232,7 @@ export default function ShowcasePage() {
               href="/register"
               className="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition"
             >
-              Join with Invite Code
+              {t.common.joinWithInvite}
             </Link>
             <a
               href="/#request-invite"

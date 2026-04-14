@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Profile {
   id: string;
@@ -56,6 +57,7 @@ const actionLabels: Record<string, string> = {
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { t } = useTranslation();
   const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export default function ProfilePage() {
   }, [session]);
 
   if (!profile) {
-    return <div className="flex justify-center items-center min-h-[60vh] text-gray-500">Loading...</div>;
+    return <div className="flex justify-center items-center min-h-[60vh] text-gray-500">{t.common.loading}</div>;
   }
 
   const nextLevel = getNextLevel(profile.points);
@@ -89,7 +91,7 @@ export default function ProfilePage() {
               <span className={`${getLevelColor(profile.points)} px-4 py-1.5 rounded-full text-sm font-medium border`}>
                 {getReputationLevel(profile.points)}
               </span>
-              <span className="text-sm text-gray-600">{profile.points} points</span>
+              <span className="text-sm text-gray-600">{profile.points} {t.talent.points}</span>
               <span className="text-sm text-gray-400 capitalize">{profile.role.replace("_", " ")}</span>
             </div>
             {profile.bio && <p className="text-gray-600 mt-3">{profile.bio}</p>}
@@ -103,7 +105,7 @@ export default function ProfilePage() {
             {profile.available && (
               <span className="inline-flex items-center gap-1.5 text-xs text-green-600 mt-2">
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                Available for projects
+                {t.profile.available}
               </span>
             )}
           </div>
@@ -130,10 +132,10 @@ export default function ProfilePage() {
         {/* Projects */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Projects ({profile.teamMemberships.length})
+            {t.explore.title} ({profile.teamMemberships.length})
           </h2>
           {profile.teamMemberships.length === 0 ? (
-            <p className="text-gray-500 text-sm">No projects yet.</p>
+            <p className="text-gray-500 text-sm">{t.dashboard.noProjects}</p>
           ) : (
             <div className="space-y-3">
               {profile.teamMemberships.map((tm, i) => (
@@ -161,7 +163,7 @@ export default function ProfilePage() {
 
         {/* Point History */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.dashboard.recentActivity}</h2>
           {profile.pointLogs.length === 0 ? (
             <p className="text-gray-500 text-sm">No activity yet.</p>
           ) : (

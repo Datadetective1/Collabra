@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Profile {
   id: string;
@@ -46,6 +47,7 @@ function getLevelColor(points: number): string {
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { t } = useTranslation();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [codes, setCodes] = useState<InviteCode[]>([]);
   const [copied, setCopied] = useState("");
@@ -68,13 +70,13 @@ export default function DashboardPage() {
   }
 
   if (!profile) {
-    return <div className="flex justify-center items-center min-h-[60vh] text-gray-500">Loading...</div>;
+    return <div className="flex justify-center items-center min-h-[60vh] text-gray-500">{t.common.loading}</div>;
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome back, {profile.name}</h1>
+        <h1 className="text-3xl font-bold text-gray-900">{t.dashboard.welcome}, {profile.name}</h1>
         <div className="flex items-center gap-3 mt-2">
           <span className={`${getLevelColor(profile.points)} px-3 py-1 rounded-full text-xs font-medium`}>
             {getReputationLevel(profile.points)}
@@ -89,7 +91,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">My Projects</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t.dashboard.yourProjects}</h2>
               <Link
                 href="/problems"
                 className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
@@ -100,7 +102,7 @@ export default function DashboardPage() {
 
             {profile.teamMemberships.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
-                <p className="mb-4">You haven&apos;t joined any projects yet.</p>
+                <p className="mb-4">{t.dashboard.noProjects}</p>
                 <Link
                   href="/problems"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"

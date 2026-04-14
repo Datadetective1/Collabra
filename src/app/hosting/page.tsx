@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface License {
   id: string;
@@ -77,6 +78,7 @@ const regionNames: Record<string, string> = {
 
 export default function HostingPage() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [listings, setListings] = useState<HostedListing[]>([]);
   const [stats, setStats] = useState<PlatformStats | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -140,11 +142,11 @@ export default function HostingPage() {
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Hosting Dashboard</h1>
-              <p className="mt-2 text-gray-400">Manage deployments, instances, and infrastructure</p>
+              <h1 className="text-3xl font-bold">{t.hosting.title}</h1>
+              <p className="mt-2 text-gray-400">{t.hosting.subtitle}</p>
             </div>
             <Link href="/marketplace" className="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-600 transition">
-              View Marketplace
+              {t.nav.marketplace}
             </Link>
           </div>
 
@@ -152,12 +154,12 @@ export default function HostingPage() {
           {stats && (
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {[
-                { label: "Solutions", value: stats.totalSolutions, color: "text-blue-400" },
-                { label: "Running", value: stats.runningSolutions, color: "text-green-400" },
-                { label: "Instances", value: stats.totalInstances, color: "text-purple-400" },
-                { label: "Active", value: stats.activeInstances, color: "text-emerald-400" },
-                { label: "Total Revenue", value: "$" + stats.totalRevenue.toLocaleString(), color: "text-amber-400" },
-                { label: "Platform (20%)", value: "$" + stats.platformRevenue.toLocaleString(), color: "text-indigo-400" },
+                { label: t.hosting.totalSolutions, value: stats.totalSolutions, color: "text-blue-400" },
+                { label: t.hosting.runningSolutions, value: stats.runningSolutions, color: "text-green-400" },
+                { label: t.hosting.totalInstances, value: stats.totalInstances, color: "text-purple-400" },
+                { label: t.hosting.activeInstances, value: stats.activeInstances, color: "text-emerald-400" },
+                { label: t.hosting.totalRevenue, value: "$" + stats.totalRevenue.toLocaleString(), color: "text-amber-400" },
+                { label: t.hosting.platformRevenue, value: "$" + stats.platformRevenue.toLocaleString(), color: "text-indigo-400" },
               ].map((s) => (
                 <div key={s.label} className="bg-gray-800/50 rounded-lg p-4">
                   <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
@@ -173,8 +175,7 @@ export default function HostingPage() {
       <div className="max-w-6xl mx-auto px-4 py-8 w-full">
         {listings.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-            <p className="text-gray-500">No hosted solutions yet.</p>
-            <p className="text-gray-400 text-sm mt-1">Complete a project and list it on the marketplace to start hosting.</p>
+            <p className="text-gray-500">{t.hosting.noSolutions}</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -217,20 +218,20 @@ export default function HostingPage() {
                       <div className="flex items-center gap-2">
                         {listing.hostingStatus === "running" && (
                           <button onClick={() => hostingAction(listing.id, "stop")}
-                            className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition">Stop</button>
+                            className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition">{t.hosting.stop}</button>
                         )}
                         {listing.hostingStatus === "stopped" && (
                           <button onClick={() => hostingAction(listing.id, "restart")}
-                            className="text-xs bg-green-50 text-green-600 px-3 py-1.5 rounded-lg hover:bg-green-100 transition">Restart</button>
+                            className="text-xs bg-green-50 text-green-600 px-3 py-1.5 rounded-lg hover:bg-green-100 transition">{t.hosting.restart}</button>
                         )}
                         <button onClick={() => setConfigForm(configForm?.listingId === listing.id ? null : {
                           listingId: listing.id, tier: listing.hostingTier, region: listing.hostingRegion,
                           techStack: listing.techStack, setupDocs: listing.setupDocs,
                         })}
-                          className="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">Configure</button>
+                          className="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">{t.hosting.configuration}</button>
                         <button onClick={() => setExpanded(isExpanded ? null : listing.id)}
                           className="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">
-                          {isExpanded ? "Collapse" : `Instances (${listing.licenses.length})`}
+                          {isExpanded ? t.hosting.hideInstances : `${t.hosting.instances} (${listing.licenses.length})`}
                         </button>
                       </div>
                     </div>
@@ -254,7 +255,7 @@ export default function HostingPage() {
                       <form onSubmit={updateConfig} className="mt-4 bg-gray-50 rounded-lg p-4 border border-gray-200 space-y-3">
                         <div className="grid sm:grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Hosting Tier</label>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">{t.hosting.hostingTier}</label>
                             <select value={configForm.tier} onChange={(e) => setConfigForm({ ...configForm, tier: e.target.value })}
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
                               <option value="starter">Starter — 1 vCPU, 512 MB ($5/mo)</option>
@@ -264,7 +265,7 @@ export default function HostingPage() {
                             </select>
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Region</label>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">{t.hosting.hostingRegion}</label>
                             <select value={configForm.region} onChange={(e) => setConfigForm({ ...configForm, region: e.target.value })}
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
                               {Object.entries(regionNames).map(([k, v]) => (
@@ -274,19 +275,18 @@ export default function HostingPage() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Tech Stack (comma-separated)</label>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">{t.hosting.techStack}</label>
                           <input type="text" value={configForm.techStack} onChange={(e) => setConfigForm({ ...configForm, techStack: e.target.value })}
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none" placeholder="Next.js, PostgreSQL, Redis" />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Setup Documentation</label>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">{t.hosting.setupDocs}</label>
                           <textarea rows={3} value={configForm.setupDocs} onChange={(e) => setConfigForm({ ...configForm, setupDocs: e.target.value })}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none resize-none"
-                            placeholder="Environment variables, configuration steps, API keys needed..." />
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none resize-none" />
                         </div>
                         <div className="flex gap-2">
-                          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">Save Config</button>
-                          <button type="button" onClick={() => setConfigForm(null)} className="text-sm text-gray-500 px-4 py-2">Cancel</button>
+                          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">{t.common.save}</button>
+                          <button type="button" onClick={() => setConfigForm(null)} className="text-sm text-gray-500 px-4 py-2">{t.common.cancel}</button>
                         </div>
                       </form>
                     )}
@@ -296,13 +296,13 @@ export default function HostingPage() {
                   {isExpanded && (
                     <div className="border-t border-gray-200">
                       <div className="px-6 py-3 bg-gray-50 text-xs font-medium text-gray-500 grid grid-cols-7 gap-4">
-                        <span>Organization</span>
-                        <span>Instance URL</span>
-                        <span>Status</span>
-                        <span>Region</span>
-                        <span>Storage</span>
-                        <span>Requests/mo</span>
-                        <span>Access Key</span>
+                        <span>{t.hosting.licensee}</span>
+                        <span>{t.hosting.instanceUrl}</span>
+                        <span>{t.hosting.instanceStatus}</span>
+                        <span>{t.hosting.dataRegion}</span>
+                        <span>{t.hosting.storage}</span>
+                        <span>{t.hosting.requests}</span>
+                        <span>{t.hosting.accessKey}</span>
                       </div>
                       {listing.licenses.map((lic) => {
                         const iStatus = statusStyles[lic.instanceStatus] || statusStyles.provisioning;

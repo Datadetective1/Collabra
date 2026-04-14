@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Problem {
   id: string;
@@ -17,6 +18,7 @@ interface Problem {
 
 export default function ProblemsPage() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [problems, setProblems] = useState<Problem[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
@@ -68,7 +70,7 @@ export default function ProblemsPage() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Problems</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t.problems.title}</h1>
           <p className="text-gray-500 mt-1">Real-world problems looking for teams and solutions</p>
         </div>
         {session && (
@@ -76,7 +78,7 @@ export default function ProblemsPage() {
             onClick={() => setShowForm(!showForm)}
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
           >
-            {showForm ? "Cancel" : "Post a Problem"}
+            {showForm ? t.common.cancel : "Post a Problem"}
           </button>
         )}
       </div>
@@ -86,7 +88,7 @@ export default function ProblemsPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Post a New Problem</h2>
           <form onSubmit={handleCreateProblem} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Problem Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.problems.problemTitle}</label>
               <input
                 type="text"
                 value={title}
@@ -97,7 +99,7 @@ export default function ProblemsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.problems.problemDescription}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -108,17 +110,17 @@ export default function ProblemsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.problems.category}</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
               >
-                <option value="education">Education</option>
+                <option value="education">{t.problems.categories.education}</option>
                 <option value="health">Health</option>
-                <option value="environment">Environment</option>
-                <option value="community">Community</option>
-                <option value="technology">Technology</option>
+                <option value="environment">{t.problems.categories.environment}</option>
+                <option value="community">{t.problems.categories.community}</option>
+                <option value="technology">{t.problems.categories.technology}</option>
               </select>
             </div>
             <button
@@ -146,7 +148,7 @@ export default function ProblemsPage() {
                 <p className="text-gray-600 text-sm mb-3">{problem.description}</p>
                 <div className="flex items-center gap-4 text-xs text-gray-500">
                   <span className="capitalize">{problem.category}</span>
-                  <span>Posted by {problem.creator.name}</span>
+                  <span>{t.problems.postedBy} {problem.creator.name}</span>
                   {problem.project && (
                     <span>{problem.project.teamMembers.length} team members</span>
                   )}
@@ -158,7 +160,7 @@ export default function ProblemsPage() {
                     href={`/projects/${(problem as unknown as { project: { id: string } }).project?.id || ""}`}
                     className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
                   >
-                    View Project
+                    {t.explore.viewProject}
                   </Link>
                 ) : (
                   session && (
@@ -166,7 +168,7 @@ export default function ProblemsPage() {
                       onClick={() => handleStartProject(problem.id, problem.title)}
                       className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
                     >
-                      Start Project
+                      {t.problems.startProject}
                     </button>
                   )
                 )}

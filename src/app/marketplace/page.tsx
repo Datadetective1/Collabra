@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Listing {
   id: string;
@@ -35,6 +36,7 @@ function getCategoryColor(cat: string) {
 }
 
 export default function MarketplacePage() {
+  const { t } = useTranslation();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [requestForm, setRequestForm] = useState<{ listingId: string; name: string; email: string; orgName: string } | null>(null);
@@ -72,10 +74,10 @@ export default function MarketplacePage() {
       <section className="bg-gradient-to-br from-emerald-700 via-teal-700 to-cyan-800 text-white">
         <div className="max-w-5xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Solution Marketplace
+            {t.marketplace.title}
           </h1>
           <p className="mt-4 text-lg text-emerald-100 max-w-2xl mx-auto">
-            Production-ready solutions built by verified teams. License, deploy, and start solving problems today.
+            {t.marketplace.subtitle}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-10">
             <div className="text-center">
@@ -101,7 +103,7 @@ export default function MarketplacePage() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-sm">70%</div>
               <div className="text-left">
-                <p className="text-sm font-semibold text-gray-900">Builders</p>
+                <p className="text-sm font-semibold text-gray-900">{t.marketplace.buildOnceBuilders}</p>
                 <p className="text-xs text-gray-500">Engineers who built it</p>
               </div>
             </div>
@@ -109,7 +111,7 @@ export default function MarketplacePage() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-sm">20%</div>
               <div className="text-left">
-                <p className="text-sm font-semibold text-gray-900">Collabra</p>
+                <p className="text-sm font-semibold text-gray-900">{t.marketplace.buildOncePlatform}</p>
                 <p className="text-xs text-gray-500">Platform & infrastructure</p>
               </div>
             </div>
@@ -117,7 +119,7 @@ export default function MarketplacePage() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-sm">10%</div>
               <div className="text-left">
-                <p className="text-sm font-semibold text-gray-900">Problem Creator</p>
+                <p className="text-sm font-semibold text-gray-900">{t.marketplace.buildOnceCreator}</p>
                 <p className="text-xs text-gray-500">Who identified the need</p>
               </div>
             </div>
@@ -128,7 +130,7 @@ export default function MarketplacePage() {
       {/* Listings */}
       <section className="max-w-6xl mx-auto px-4 py-12 w-full">
         {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading marketplace...</div>
+          <div className="text-center py-20 text-gray-500">{t.common.loading}</div>
         ) : (
           <div className="space-y-8">
             {listings.map((listing) => {
@@ -202,7 +204,7 @@ export default function MarketplacePage() {
                             onClick={() => setRequestForm({ listingId: listing.id, name: "", email: "", orgName: "" })}
                             className="mt-4 w-full bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-emerald-700 transition"
                           >
-                            Request License
+                            {t.marketplace.requestLicense}
                           </button>
 
                           <Link href={`/projects/${p.id}`}
@@ -239,22 +241,22 @@ export default function MarketplacePage() {
                     {/* License request form */}
                     {requestForm?.listingId === listing.id && requestStatus !== "success" && (
                       <form onSubmit={requestLicense} className="mt-6 bg-emerald-50 border border-emerald-200 rounded-xl p-6 space-y-4">
-                        <h3 className="font-semibold text-emerald-900">Request a License</h3>
+                        <h3 className="font-semibold text-emerald-900">{t.marketplace.requestForm.title}</h3>
                         <div className="grid sm:grid-cols-3 gap-4">
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Your Name</label>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">{t.marketplace.requestForm.yourName}</label>
                             <input type="text" required value={requestForm.name}
                               onChange={(e) => setRequestForm({ ...requestForm, name: e.target.value })}
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">{t.marketplace.requestForm.yourEmail}</label>
                             <input type="email" required value={requestForm.email}
                               onChange={(e) => setRequestForm({ ...requestForm, email: e.target.value })}
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Organization</label>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">{t.marketplace.requestForm.orgName}</label>
                             <input type="text" value={requestForm.orgName}
                               onChange={(e) => setRequestForm({ ...requestForm, orgName: e.target.value })}
                               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
@@ -264,10 +266,10 @@ export default function MarketplacePage() {
                         <div className="flex gap-2">
                           <button type="submit" disabled={requestStatus === "loading"}
                             className="bg-emerald-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 disabled:opacity-50">
-                            {requestStatus === "loading" ? "Submitting..." : "Request License"}
+                            {requestStatus === "loading" ? t.marketplace.requestForm.requesting : t.marketplace.requestForm.request}
                           </button>
                           <button type="button" onClick={() => { setRequestForm(null); setRequestStatus("idle"); }}
-                            className="text-sm text-gray-500 px-4 py-2">Cancel</button>
+                            className="text-sm text-gray-500 px-4 py-2">{t.common.cancel}</button>
                         </div>
                       </form>
                     )}
@@ -277,7 +279,7 @@ export default function MarketplacePage() {
                         <div className="text-2xl mb-2">&#10003;</div>
                         <p className="font-semibold text-emerald-900">{successMsg}</p>
                         <button onClick={() => { setRequestForm(null); setRequestStatus("idle"); }}
-                          className="mt-3 text-sm text-emerald-700 hover:underline">Close</button>
+                          className="mt-3 text-sm text-emerald-700 hover:underline">{t.common.close}</button>
                       </div>
                     )}
                   </div>
@@ -296,7 +298,7 @@ export default function MarketplacePage() {
 
         {/* How it works */}
         <div className="mt-16 bg-white rounded-2xl border border-gray-200 p-10">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Build Once, Earn Forever</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">{t.marketplace.buildOnceTitle}</h3>
           <div className="grid sm:grid-cols-4 gap-8">
             {[
               { step: "1", title: "Build a Solution", desc: "Teams collaborate to solve a real problem on Collabra.", icon: "🔨" },

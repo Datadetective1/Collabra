@@ -4,9 +4,11 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -56,7 +58,7 @@ export default function RegisterPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">Join Collabra</h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">{t.auth.registerTitle}</h1>
           <p className="text-sm text-gray-500 text-center mb-8">Invite-only access for early builders</p>
 
           {error && (
@@ -65,7 +67,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Invite Code</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.auth.inviteCode}</label>
               <input
                 type="text"
                 value={form.inviteCode}
@@ -76,7 +78,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.auth.name}</label>
               <input
                 type="text"
                 value={form.name}
@@ -86,7 +88,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.auth.email}</label>
               <input
                 type="email"
                 value={form.email}
@@ -96,7 +98,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.auth.password}</label>
               <input
                 type="password"
                 value={form.password}
@@ -107,7 +109,7 @@ export default function RegisterPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Your Role</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.home.yourRole}</label>
               <select
                 value={form.role}
                 onChange={(e) => update("role", e.target.value)}
@@ -125,14 +127,14 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 transition"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? t.auth.registering : t.auth.register}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{" "}
+            {t.auth.hasAccount}{" "}
             <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium">
-              Sign in
+              {t.common.signIn}
             </Link>
           </p>
         </div>

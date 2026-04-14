@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Project {
   id: string;
@@ -14,6 +15,7 @@ interface Project {
 }
 
 export default function ExplorePage() {
+  const { t } = useTranslation();
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export default function ExplorePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Explore Projects</h1>
+        <h1 className="text-3xl font-bold text-gray-900">{t.explore.title}</h1>
         <p className="text-gray-500 mt-1">See what teams are building on Collabra</p>
       </div>
 
@@ -65,7 +67,7 @@ export default function ExplorePage() {
                   <div className="mb-4">
                     <div className="flex justify-between text-xs text-gray-500 mb-1">
                       <span>Progress</span>
-                      <span>{completedTasks}/{totalTasks} tasks</span>
+                      <span>{completedTasks}/{totalTasks} {t.explore.tasks}</span>
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div

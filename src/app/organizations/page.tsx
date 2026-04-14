@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface Org {
   id: string;
@@ -37,6 +38,7 @@ const tierInfo: Record<string, { label: string; color: string; price: string; fe
 };
 
 export default function OrganizationsPage() {
+  const { t } = useTranslation();
   const { data: session } = useSession();
   const userId = (session?.user as { id?: string })?.id;
   const [orgs, setOrgs] = useState<Org[]>([]);
@@ -69,10 +71,10 @@ export default function OrganizationsPage() {
       <section className="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 text-white">
         <div className="max-w-5xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Collabra for Teams
+            {t.orgs.title}
           </h1>
           <p className="mt-4 text-lg text-blue-200 max-w-2xl mx-auto">
-            Organize your team, manage private projects, post funded bounties, and track impact — all in one place.
+            {t.orgs.subtitle}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             {session && (
@@ -80,7 +82,7 @@ export default function OrganizationsPage() {
                 onClick={() => setShowCreate(!showCreate)}
                 className="bg-white text-blue-700 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition"
               >
-                Create Organization
+                {t.orgs.createOrg}
               </button>
             )}
             <button
@@ -97,29 +99,29 @@ export default function OrganizationsPage() {
         {/* Create form */}
         {showCreate && (
           <form onSubmit={createOrg} className="bg-white rounded-xl border border-gray-200 p-6 mb-8 space-y-4">
-            <h3 className="font-semibold text-gray-900">Create Organization</h3>
+            <h3 className="font-semibold text-gray-900">{t.orgs.createOrg}</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Organization Name</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t.orgs.orgName}</label>
                 <input type="text" required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Website</label>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t.orgs.website}</label>
                 <input type="url" value={form.website} onChange={(e) => setForm((p) => ({ ...p, website: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                   placeholder="https://..." />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
+              <label className="block text-xs font-medium text-gray-600 mb-1">{t.orgs.description}</label>
               <textarea rows={2} value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none"
                 placeholder="What does your organization do?" />
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Create</button>
-              <button type="button" onClick={() => setShowCreate(false)} className="text-sm text-gray-500 px-4 py-2">Cancel</button>
+              <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">{t.common.create}</button>
+              <button type="button" onClick={() => setShowCreate(false)} className="text-sm text-gray-500 px-4 py-2">{t.common.cancel}</button>
             </div>
           </form>
         )}
@@ -164,7 +166,7 @@ export default function OrganizationsPage() {
         )}
 
         {/* Org list */}
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Organizations</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">{t.orgs.title}</h2>
         <div className="grid sm:grid-cols-2 gap-6">
           {orgs.map((org) => {
             const tier = tierInfo[org.tier] || tierInfo.free;
@@ -195,11 +197,11 @@ export default function OrganizationsPage() {
                 <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-3 gap-4 text-center">
                   <div>
                     <div className="text-sm font-bold text-gray-900">{org.members.length}</div>
-                    <div className="text-xs text-gray-500">Members</div>
+                    <div className="text-xs text-gray-500">{t.orgs.members}</div>
                   </div>
                   <div>
                     <div className="text-sm font-bold text-gray-900">{org.problems.length}</div>
-                    <div className="text-xs text-gray-500">Problems</div>
+                    <div className="text-xs text-gray-500">{t.orgs.problems}</div>
                   </div>
                   <div>
                     <div className="text-sm font-bold text-amber-600">${totalBounties.toLocaleString()}</div>

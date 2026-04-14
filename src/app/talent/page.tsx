@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/context";
 
 interface TalentProfile {
   id: string;
@@ -25,6 +26,7 @@ function getReputationLevel(points: number) {
 }
 
 export default function TalentPage() {
+  const { t } = useTranslation();
   const [talent, setTalent] = useState<TalentProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
@@ -51,10 +53,10 @@ export default function TalentPage() {
       <section className="bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-900 text-white">
         <div className="max-w-5xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Talent Directory
+            {t.talent.title}
           </h1>
           <p className="mt-4 text-lg text-purple-200 max-w-2xl mx-auto">
-            Discover top builders with proven track records. Every contribution is verified through real projects.
+            {t.talent.subtitle}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-8">
             <div className="text-center">
@@ -80,7 +82,7 @@ export default function TalentPage() {
             type="text"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            placeholder="Search by name or skill..."
+            placeholder={t.talent.searchPlaceholder}
             className="border border-gray-300 rounded-lg px-4 py-2.5 text-sm flex-1 min-w-[250px] focus:ring-2 focus:ring-purple-500 outline-none"
           />
           {allSkills.length > 0 && (
@@ -101,7 +103,7 @@ export default function TalentPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading talent...</div>
+          <div className="text-center py-20 text-gray-500">{t.common.loading}</div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((person) => {
@@ -121,7 +123,7 @@ export default function TalentPage() {
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-bold text-purple-600">{person.points}</div>
-                      <div className="text-xs text-gray-400">pts</div>
+                      <div className="text-xs text-gray-400">{t.talent.points}</div>
                     </div>
                   </div>
 
@@ -145,7 +147,7 @@ export default function TalentPage() {
                   <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-3 gap-2 text-center">
                     <div>
                       <div className="text-sm font-bold text-gray-900">{person.projectCount}</div>
-                      <div className="text-xs text-gray-500">Projects</div>
+                      <div className="text-xs text-gray-500">{t.talent.projects}</div>
                     </div>
                     <div>
                       <div className="text-sm font-bold text-gray-900">{person.completedProjects}</div>
@@ -153,7 +155,7 @@ export default function TalentPage() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-gray-900">{person.tasksCompleted}</div>
-                      <div className="text-xs text-gray-500">Tasks</div>
+                      <div className="text-xs text-gray-500">{t.talent.tasksCompleted}</div>
                     </div>
                   </div>
 
@@ -168,7 +170,7 @@ export default function TalentPage() {
                     {person.available && (
                       <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg">
                         <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                        Available
+                        {t.talent.availableForWork}
                       </span>
                     )}
                   </div>
@@ -180,7 +182,7 @@ export default function TalentPage() {
 
         {!loading && filtered.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-500">No builders match your search.</p>
+            <p className="text-gray-500">{t.common.noResults}</p>
           </div>
         )}
 
