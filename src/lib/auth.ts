@@ -1,7 +1,18 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { randomBytes } from "crypto";
 import { prisma } from "@/lib/db";
+
+// Magic-link accounts are passwordless — but the Turso production DB still
+// has User.passwordHash NOT NULL (we don't rebuild that table across FKs
+// just for this). Store a bcrypt hash of random bytes; nothing can ever
+// `compare()` against it successfully, so password sign-in for those
+// accounts is impossible by construction.
+async function makeUnusablePasswordHash(): Promise<string> {
+  const randomSecret = randomBytes(32).toString("hex");
+  return bcrypt.hash(randomSecret, 10);
+}
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -75,6 +86,10 @@ export const authOptions: AuthOptions = {
         // Users can edit their profile afterwards.
         const defaultName = pending.email.split("@")[0] || "Collabra User";
 
+        // Pre-compute the unusable hash outside the transaction so bcrypt's
+        // cost doesn't eat into the transaction's lock window.
+        const unusableHash = await makeUnusablePasswordHash();
+
         // All-or-nothing: create user (or reuse existing), create problem,
         // mark pending consumed.
         const result = await prisma.$transaction(async (tx) => {
@@ -85,7 +100,7 @@ export const authOptions: AuthOptions = {
               email: pending.email,
               name: defaultName,
               role: "problem_creator",
-              // passwordHash intentionally omitted — passwordless account.
+              passwordHash: unusableHash,
             },
           });
 
