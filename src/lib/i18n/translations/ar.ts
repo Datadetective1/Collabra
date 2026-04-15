@@ -486,6 +486,30 @@ export const translations = {
     roleProblemCreator: "ناشر مشكلات",
   },
 
+  // Submit Problem (magic-link, no account needed)
+  submitProblem: {
+    ctaPrimary: "شارك مشكلة",
+    ctaHint: "لا حاجة لحساب — فقط بريدك الإلكتروني",
+    title: "شارك مشكلة",
+    subtitle: "صف تحديًا حقيقيًا. سنرسل لك رابطًا لنشره.",
+    emailLabel: "بريدك الإلكتروني",
+    emailHint: "سنرسل لك رابطًا بنقرة واحدة لنشر مشكلتك.",
+    titleLabel: "ما هي المشكلة؟",
+    descLabel: "أخبرنا المزيد",
+    submit: "أرسل لي الرابط",
+    submitting: "جارٍ الإرسال...",
+    sentTitle: "تحقق من بريدك الوارد",
+    sentBody: "لقد أرسلنا للتو رابطًا إلى",
+    sentHint: "انقر على الرابط خلال 30 دقيقة لنشر مشكلتك. إذا لم تره، تحقق من مجلد البريد العشوائي.",
+    noAccountNeeded: "لا حاجة لكلمة مرور. يتم إنشاء حسابك عند النقر على الرابط.",
+    publishing: "جارٍ نشر مشكلتك...",
+    linkExpired: "انتهت صلاحية هذا الرابط",
+    linkInvalid: "هذا الرابط غير صالح",
+    linkError: "حدث خطأ ما",
+    tryAgainHint: "أرسل مشكلتك مرة أخرى للحصول على رابط جديد.",
+    tryAgain: "حاول مجددًا",
+  },
+
   // Footer / misc
   footer: {
     tagline: "نحوّل المشكلات الحقيقية إلى حلول تعاونية.",

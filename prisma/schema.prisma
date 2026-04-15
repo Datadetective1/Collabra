@@ -11,7 +11,7 @@ model User {
   id           String   @id @default(cuid())
   email        String   @unique
   name         String
-  passwordHash String
+  passwordHash String?
   role         String   @default("builder")
   points       Int      @default(0)
   bio          String   @default("")
@@ -239,4 +239,20 @@ model WaitlistEntry {
   role      String
   reason    String
   createdAt DateTime @default(now())
+}
+
+model PendingProblemSubmission {
+  id               String   @id @default(cuid())
+  email            String
+  title            String
+  description      String
+  category         String   @default("education")
+  token            String   @unique
+  expiresAt        DateTime
+  consumedAt       DateTime?
+  resultProblemId  String?
+  createdAt        DateTime @default(now())
+
+  @@index([email])
+  @@index([expiresAt])
 }

@@ -486,6 +486,30 @@ export const translations = {
     roleProblemCreator: "Creador de problemas",
   },
 
+  // Submit Problem (magic-link, no account needed)
+  submitProblem: {
+    ctaPrimary: "Compartir un problema",
+    ctaHint: "No necesitas cuenta — solo tu correo",
+    title: "Compartir un problema",
+    subtitle: "Describe un reto real. Te enviaremos un enlace para publicarlo.",
+    emailLabel: "Tu correo",
+    emailHint: "Te enviaremos un enlace de un clic para publicar tu problema.",
+    titleLabel: "¿Cuál es el problema?",
+    descLabel: "Cuéntanos más",
+    submit: "Enviarme el enlace",
+    submitting: "Enviando...",
+    sentTitle: "Revisa tu bandeja de entrada",
+    sentBody: "Acabamos de enviar un enlace a",
+    sentHint: "Haz clic en el enlace en los próximos 30 minutos para publicar tu problema. Si no lo ves, revisa la carpeta de spam.",
+    noAccountNeeded: "No se requiere contraseña. Tu cuenta se crea al hacer clic en el enlace.",
+    publishing: "Publicando tu problema...",
+    linkExpired: "Este enlace ha caducado",
+    linkInvalid: "Este enlace no es válido",
+    linkError: "Algo salió mal",
+    tryAgainHint: "Envía tu problema de nuevo para obtener un enlace nuevo.",
+    tryAgain: "Intentar de nuevo",
+  },
+
   // Footer / misc
   footer: {
     tagline: "Convirtiendo problemas reales en soluciones colaborativas.",

@@ -71,8 +71,14 @@ export default function Home() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
-              href="/register"
+              href="/submit-problem"
               className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition"
+            >
+              {t.submitProblem.ctaPrimary}
+            </Link>
+            <Link
+              href="/register"
+              className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition"
             >
               {t.common.joinWithInvite}
             </Link>
@@ -88,13 +94,10 @@ export default function Home() {
             >
               {t.home.viewShowcase}
             </Link>
-            <a
-              href="#request-invite"
-              className="border border-indigo-300 text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition"
-            >
-              {t.home.joinWaitlist}
-            </a>
           </div>
+          <p className="mt-4 text-sm text-gray-500">
+            {t.submitProblem.ctaHint}
+          </p>
         </div>
       </section>
 
