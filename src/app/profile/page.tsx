@@ -47,18 +47,18 @@ function getNextLevel(points: number): { name: string; threshold: number } | nul
   return { name: "Builder", threshold: 30 };
 }
 
-const actionLabels: Record<string, string> = {
-  join_project: "Joined a project",
-  complete_task: "Completed a task",
-  complete_milestone: "Completed a milestone",
-  complete_project: "Completed a project",
-};
-
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { t } = useTranslation();
   const [profile, setProfile] = useState<Profile | null>(null);
+
+  const actionLabels: Record<string, string> = {
+    join_project: t.profile.actions.joinProject,
+    complete_task: t.profile.actions.completeTask,
+    complete_milestone: t.profile.actions.completeMilestone,
+    complete_project: t.profile.actions.completeProject,
+  };
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login");
@@ -115,7 +115,7 @@ export default function ProfilePage() {
         {nextLevel && (
           <div className="mt-6 pt-6 border-t border-gray-200">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600">Progress to {nextLevel.name}</span>
+              <span className="text-gray-600">{t.profile.progressTo} {nextLevel.name}</span>
               <span className="text-gray-500">{profile.points}/{nextLevel.threshold} pts</span>
             </div>
             <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -165,7 +165,7 @@ export default function ProfilePage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.dashboard.recentActivity}</h2>
           {profile.pointLogs.length === 0 ? (
-            <p className="text-gray-500 text-sm">No activity yet.</p>
+            <p className="text-gray-500 text-sm">{t.profile.noActivity}</p>
           ) : (
             <div className="space-y-3">
               {profile.pointLogs.map((log, i) => (

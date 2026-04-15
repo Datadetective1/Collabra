@@ -71,21 +71,21 @@ export default function ProblemsPage() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{t.problems.title}</h1>
-          <p className="text-gray-500 mt-1">Real-world problems looking for teams and solutions</p>
+          <p className="text-gray-500 mt-1">{t.problems.realSubtitle}</p>
         </div>
         {session && (
           <button
             onClick={() => setShowForm(!showForm)}
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
           >
-            {showForm ? t.common.cancel : "Post a Problem"}
+            {showForm ? t.common.cancel : t.problems.postProblem}
           </button>
         )}
       </div>
 
       {showForm && (
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Post a New Problem</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.problems.postNewProblem}</h2>
           <form onSubmit={handleCreateProblem} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{t.problems.problemTitle}</label>
@@ -95,7 +95,7 @@ export default function ProblemsPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
-                placeholder="e.g., Students need a better way to organize homework"
+                placeholder={t.problems.titlePlaceholder}
               />
             </div>
             <div>
@@ -106,7 +106,7 @@ export default function ProblemsPage() {
                 required
                 rows={4}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none"
-                placeholder="Describe the problem in detail. Who is affected? What's the impact?"
+                placeholder={t.problems.descriptionPlaceholder}
               />
             </div>
             <div>
@@ -117,7 +117,7 @@ export default function ProblemsPage() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
               >
                 <option value="education">{t.problems.categories.education}</option>
-                <option value="health">Health</option>
+                <option value="health">{t.problems.categories.health}</option>
                 <option value="environment">{t.problems.categories.environment}</option>
                 <option value="community">{t.problems.categories.community}</option>
                 <option value="technology">{t.problems.categories.technology}</option>
@@ -128,7 +128,7 @@ export default function ProblemsPage() {
               disabled={submitting}
               className="bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
             >
-              {submitting ? "Posting..." : "Post Problem"}
+              {submitting ? t.problems.posting : t.problems.postProblem}
             </button>
           </form>
         </div>
@@ -150,7 +150,7 @@ export default function ProblemsPage() {
                   <span className="capitalize">{problem.category}</span>
                   <span>{t.problems.postedBy} {problem.creator.name}</span>
                   {problem.project && (
-                    <span>{problem.project.teamMembers.length} team members</span>
+                    <span>{problem.project.teamMembers.length} {t.explore.teamMembers}</span>
                   )}
                 </div>
               </div>
@@ -179,7 +179,7 @@ export default function ProblemsPage() {
 
         {problems.length === 0 && (
           <div className="text-center py-16 text-gray-500">
-            <p>No problems posted yet. Be the first to post one!</p>
+            <p>{t.problems.noProblems}</p>
           </div>
         )}
       </div>

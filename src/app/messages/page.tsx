@@ -172,7 +172,7 @@ export default function MessagesPage() {
                 <p className="text-xs font-medium text-indigo-700 mb-2">{t.messages.selectTeammate}</p>
                 <div className="space-y-1 max-h-40 overflow-y-auto">
                   {teammates.length === 0 ? (
-                    <p className="text-xs text-gray-500">Join a project to message teammates.</p>
+                    <p className="text-xs text-gray-500">{t.messages.joinProjectToMessage}</p>
                   ) : (
                     teammates.map((tm) => (
                       <button
@@ -257,7 +257,7 @@ export default function MessagesPage() {
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-gray-50">
                   {messages.length === 0 && (
-                    <p className="text-center text-gray-400 text-sm py-8">No messages yet. Say hello!</p>
+                    <p className="text-center text-gray-400 text-sm py-8">{t.messages.sayHello}</p>
                   )}
                   {messages.map((msg) => {
                     const isMe = msg.sender.id === userId;

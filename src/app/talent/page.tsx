@@ -61,15 +61,15 @@ export default function TalentPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-8">
             <div className="text-center">
               <div className="text-3xl font-bold">{talent.length}</div>
-              <div className="text-purple-200 text-sm mt-1">Active Builders</div>
+              <div className="text-purple-200 text-sm mt-1">{t.talent.activeBuilders}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{allSkills.length}</div>
-              <div className="text-purple-200 text-sm mt-1">Unique Skills</div>
+              <div className="text-purple-200 text-sm mt-1">{t.talent.uniqueSkills}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{talent.reduce((s, t) => s + t.tasksCompleted, 0)}</div>
-              <div className="text-purple-200 text-sm mt-1">Tasks Shipped</div>
+              <div className="text-purple-200 text-sm mt-1">{t.talent.tasksShipped}</div>
             </div>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function TalentPage() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-gray-900">{person.completedProjects}</div>
-                      <div className="text-xs text-gray-500">Shipped</div>
+                      <div className="text-xs text-gray-500">{t.talent.shipped}</div>
                     </div>
                     <div>
                       <div className="text-sm font-bold text-gray-900">{person.tasksCompleted}</div>
@@ -165,7 +165,7 @@ export default function TalentPage() {
                       href={`/messages`}
                       className="flex-1 text-center bg-purple-50 text-purple-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-purple-100 transition"
                     >
-                      Message
+                      {t.talent.message}
                     </Link>
                     {person.available && (
                       <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg">
@@ -188,16 +188,15 @@ export default function TalentPage() {
 
         {/* For Companies CTA */}
         <div className="mt-16 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-3">Looking to hire top builders?</h3>
+          <h3 className="text-2xl font-bold mb-3">{t.talent.hiringTitle}</h3>
           <p className="text-purple-200 mb-6 max-w-xl mx-auto">
-            Every builder on Collabra has a verified track record of shipping real solutions.
-            Browse profiles, see completed projects, and recruit proven talent.
+            {t.talent.hiringDesc}
           </p>
           <Link
             href="/#request-invite"
             className="inline-block bg-white text-purple-700 px-6 py-3 rounded-lg font-medium hover:bg-purple-50 transition"
           >
-            Contact Us for Recruiting
+            {t.talent.contactRecruiting}
           </Link>
         </div>
       </div>

@@ -26,14 +26,14 @@ export default function ExplorePage() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">{t.explore.title}</h1>
-        <p className="text-gray-500 mt-1">See what teams are building on Collabra</p>
+        <p className="text-gray-500 mt-1">{t.explore.publicSubtitle}</p>
       </div>
 
       {projects.length === 0 ? (
         <div className="text-center py-16 text-gray-500">
-          <p className="mb-4">No public projects yet.</p>
+          <p className="mb-4">{t.explore.noPublicProjects}</p>
           <Link href="/problems" className="text-indigo-600 hover:text-indigo-700 font-medium">
-            Browse problems to get started
+            {t.explore.browseProblemsStart}
           </Link>
         </div>
       ) : (
@@ -66,7 +66,7 @@ export default function ExplorePage() {
                 {totalTasks > 0 && (
                   <div className="mb-4">
                     <div className="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Progress</span>
+                      <span>{t.common.progress}</span>
                       <span>{completedTasks}/{totalTasks} {t.explore.tasks}</span>
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -91,7 +91,7 @@ export default function ExplorePage() {
                     ))}
                   </div>
                   <span className="text-xs text-gray-500">
-                    {project.teamMembers.length} member{project.teamMembers.length !== 1 ? "s" : ""}
+                    {project.teamMembers.length} {t.explore.teamMembers}
                   </span>
                 </div>
               </Link>

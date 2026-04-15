@@ -129,7 +129,7 @@ export default function ProjectPage() {
             <p className="text-gray-600 mt-2">{project.problem.description}</p>
             <div className="flex items-center gap-3 mt-3 text-sm text-gray-500">
               <span className="capitalize">{project.problem.category}</span>
-              <span>Created by {project.problem.creator.name}</span>
+              <span>{t.problems.postedBy} {project.problem.creator.name}</span>
               <span className={`px-2 py-0.5 rounded-full text-xs ${
                 project.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
               }`}>
@@ -150,7 +150,7 @@ export default function ProjectPage() {
         {/* Solution description */}
         {project.description && (
           <div className="mt-4 bg-indigo-50 border border-indigo-100 rounded-lg p-4">
-            <p className="text-sm font-medium text-indigo-900 mb-1">The Solution</p>
+            <p className="text-sm font-medium text-indigo-900 mb-1">{t.project.solution}</p>
             <p className="text-sm text-indigo-700">{project.description}</p>
           </div>
         )}
@@ -161,13 +161,13 @@ export default function ProjectPage() {
             {project.demoUrl && (
               <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm font-medium bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-100 transition">
-                Live Demo
+                {t.project.liveDemo}
               </a>
             )}
             {project.repoUrl && (
               <a href={project.repoUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm font-medium bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
-                Source Code
+                {t.project.sourceCode}
               </a>
             )}
           </div>
@@ -199,7 +199,7 @@ export default function ProjectPage() {
                     onChange={(e) => setLinkForm((p) => ({ ...p, description: e.target.value }))}
                     rows={2}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none"
-                    placeholder="Describe what was built..."
+                    placeholder={t.project.descriptionPlaceholder}
                   />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -251,14 +251,14 @@ export default function ProjectPage() {
                   type="text"
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
-                  placeholder="New task title..."
+                  placeholder={t.project.taskTitlePlaceholder}
                   className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 <input
                   type="text"
                   value={taskDesc}
                   onChange={(e) => setTaskDesc(e.target.value)}
-                  placeholder="Description (optional)"
+                  placeholder={t.project.taskDescPlaceholder}
                   className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 <button
@@ -302,13 +302,13 @@ export default function ProjectPage() {
                               }
                               className="mt-2 text-xs text-indigo-600 hover:text-indigo-700 font-medium"
                             >
-                              {status === "todo" ? "Start" : "Complete"}
+                              {status === "todo" ? t.project.start : t.project.complete}
                             </button>
                           )}
                         </div>
                       ))}
                       {tasks.length === 0 && (
-                        <p className="text-xs text-gray-400 text-center py-4">No tasks</p>
+                        <p className="text-xs text-gray-400 text-center py-4">{t.project.noTasks}</p>
                       )}
                     </div>
                   </div>

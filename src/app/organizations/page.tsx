@@ -89,7 +89,7 @@ export default function OrganizationsPage() {
               onClick={() => setShowPricing(!showPricing)}
               className="border border-white/30 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
             >
-              View Pricing
+              {t.orgs.viewPricing}
             </button>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default function OrganizationsPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">{t.orgs.description}</label>
               <textarea rows={2} value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none"
-                placeholder="What does your organization do?" />
+                placeholder={t.orgs.descriptionPlaceholder} />
             </div>
             <div className="flex gap-2">
               <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">{t.common.create}</button>
@@ -129,12 +129,12 @@ export default function OrganizationsPage() {
         {/* Pricing */}
         {showPricing && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Pricing Plans</h2>
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">{t.orgs.pricingPlans}</h2>
             <div className="grid sm:grid-cols-3 gap-6">
               {Object.entries(tierInfo).map(([key, tier]) => (
                 <div key={key} className={`bg-white rounded-xl border-2 p-6 ${key === "team" ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
                   {key === "team" && (
-                    <span className="inline-block bg-blue-600 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">Most Popular</span>
+                    <span className="inline-block bg-blue-600 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{t.orgs.mostPopular}</span>
                   )}
                   <div className="flex items-baseline gap-2 mb-1">
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${tier.color}`}>{tier.label}</span>
@@ -157,7 +157,7 @@ export default function OrganizationsPage() {
                       ? "bg-purple-600 text-white hover:bg-purple-700"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}>
-                    {key === "free" ? "Current Plan" : "Upgrade"}
+                    {key === "free" ? t.orgs.currentPlan : t.orgs.upgrade}
                   </button>
                 </div>
               ))}
@@ -184,7 +184,7 @@ export default function OrganizationsPage() {
                     {org.description && <p className="text-sm text-gray-600 mt-1">{org.description}</p>}
                   </div>
                   {isMember && (
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Member</span>
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{t.orgs.member}</span>
                   )}
                 </div>
 
@@ -205,7 +205,7 @@ export default function OrganizationsPage() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-amber-600">${totalBounties.toLocaleString()}</div>
-                    <div className="text-xs text-gray-500">Bounties</div>
+                    <div className="text-xs text-gray-500">{t.orgs.bounties}</div>
                   </div>
                 </div>
 
@@ -230,7 +230,7 @@ export default function OrganizationsPage() {
 
         {orgs.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-500">No organizations yet. Create one to get started!</p>
+            <p className="text-gray-500">{t.orgs.noOrgs}</p>
           </div>
         )}
       </div>

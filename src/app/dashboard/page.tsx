@@ -81,7 +81,7 @@ export default function DashboardPage() {
           <span className={`${getLevelColor(profile.points)} px-3 py-1 rounded-full text-xs font-medium`}>
             {getReputationLevel(profile.points)}
           </span>
-          <span className="text-sm text-gray-500">{profile.points} points</span>
+          <span className="text-sm text-gray-500">{profile.points} {t.talent.points}</span>
           <span className="text-sm text-gray-400 capitalize">{profile.role.replace("_", " ")}</span>
         </div>
       </div>
@@ -96,7 +96,7 @@ export default function DashboardPage() {
                 href="/problems"
                 className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
               >
-                Browse Problems
+                {t.dashboard.browseProblems}
               </Link>
             </div>
 
@@ -107,7 +107,7 @@ export default function DashboardPage() {
                   href="/problems"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
                 >
-                  Find a Problem to Solve
+                  {t.dashboard.findProblem}
                 </Link>
               </div>
             ) : (
@@ -146,8 +146,8 @@ export default function DashboardPage() {
         {/* Invite Codes */}
         <div>
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Invite Codes</h2>
-            <p className="text-sm text-gray-500 mb-4">Share these to invite others to Collabra.</p>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.dashboard.inviteCodes}</h2>
+            <p className="text-sm text-gray-500 mb-4">{t.dashboard.inviteCodesDesc}</p>
 
             <div className="space-y-3">
               {codes.map((c) => (
@@ -165,7 +165,7 @@ export default function DashboardPage() {
                       onClick={() => copyCode(c.code)}
                       className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
                     >
-                      {copied === c.code ? "Copied!" : "Copy"}
+                      {copied === c.code ? t.common.copied : t.common.copy}
                     </button>
                   )}
                 </div>

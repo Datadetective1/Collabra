@@ -82,15 +82,15 @@ export default function MarketplacePage() {
           <div className="mt-8 flex flex-wrap justify-center gap-10">
             <div className="text-center">
               <div className="text-3xl font-bold">{listings.length}</div>
-              <div className="text-emerald-200 text-sm mt-1">Solutions Available</div>
+              <div className="text-emerald-200 text-sm mt-1">{t.marketplace.title}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{totalLicensees}</div>
-              <div className="text-emerald-200 text-sm mt-1">Active Licensees</div>
+              <div className="text-emerald-200 text-sm mt-1">{t.marketplace.licensees}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">${totalRevenue.toLocaleString()}</div>
-              <div className="text-emerald-200 text-sm mt-1">Revenue Generated</div>
+              <div className="text-emerald-200 text-sm mt-1">{t.marketplace.revenueGenerated}</div>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function MarketplacePage() {
               <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-sm">70%</div>
               <div className="text-left">
                 <p className="text-sm font-semibold text-gray-900">{t.marketplace.buildOnceBuilders}</p>
-                <p className="text-xs text-gray-500">Engineers who built it</p>
+                <p className="text-xs text-gray-500">{t.marketplace.engineersWhoBuilt}</p>
               </div>
             </div>
             <div className="text-gray-300 text-lg">+</div>
@@ -112,7 +112,7 @@ export default function MarketplacePage() {
               <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-sm">20%</div>
               <div className="text-left">
                 <p className="text-sm font-semibold text-gray-900">{t.marketplace.buildOncePlatform}</p>
-                <p className="text-xs text-gray-500">Platform & infrastructure</p>
+                <p className="text-xs text-gray-500">{t.marketplace.platformInfra}</p>
               </div>
             </div>
             <div className="text-gray-300 text-lg">+</div>
@@ -120,7 +120,7 @@ export default function MarketplacePage() {
               <div className="w-10 h-10 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-sm">10%</div>
               <div className="text-left">
                 <p className="text-sm font-semibold text-gray-900">{t.marketplace.buildOnceCreator}</p>
-                <p className="text-xs text-gray-500">Who identified the need</p>
+                <p className="text-xs text-gray-500">{t.marketplace.needIdentified}</p>
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function MarketplacePage() {
                             {p.problem.category}
                           </span>
                           <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700">
-                            {listing.licenses.length} licensee{listing.licenses.length !== 1 ? "s" : ""}
+                            {listing.licenses.length} {t.marketplace.licensees}
                           </span>
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900">{p.problem.title}</h2>
@@ -186,7 +186,7 @@ export default function MarketplacePage() {
                             ))}
                           </div>
                           <span className="text-xs text-gray-500">
-                            Built by {p.teamMembers.map((tm) => tm.user.name).join(", ")}
+                            {t.showcase.builtBy} {p.teamMembers.map((tm) => tm.user.name).join(", ")}
                           </span>
                         </div>
                       </div>
@@ -209,13 +209,13 @@ export default function MarketplacePage() {
 
                           <Link href={`/projects/${p.id}`}
                             className="mt-2 block text-xs text-gray-500 hover:text-gray-700 transition">
-                            View project details
+                            {t.marketplace.viewDetails}
                           </Link>
 
                           {/* Revenue breakdown */}
                           {listing.totalRevenue > 0 && (
                             <div className="mt-4 pt-4 border-t border-gray-200 text-left space-y-1.5">
-                              <p className="text-xs font-medium text-gray-500 mb-2">Revenue generated</p>
+                              <p className="text-xs font-medium text-gray-500 mb-2">{t.marketplace.revenueGenerated}</p>
                               <div className="flex justify-between text-xs">
                                 <span className="text-gray-600">Total</span>
                                 <span className="font-semibold text-gray-900">${listing.totalRevenue.toLocaleString()}</span>
@@ -289,8 +289,8 @@ export default function MarketplacePage() {
 
             {listings.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-gray-500 text-lg">No solutions listed yet.</p>
-                <p className="text-gray-400 mt-2">Complete a project and list it on the marketplace!</p>
+                <p className="text-gray-500 text-lg">{t.marketplace.noSolutions}</p>
+                <p className="text-gray-400 mt-2">{t.marketplace.completeProjectCta}</p>
               </div>
             )}
           </div>
@@ -301,10 +301,10 @@ export default function MarketplacePage() {
           <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">{t.marketplace.buildOnceTitle}</h3>
           <div className="grid sm:grid-cols-4 gap-8">
             {[
-              { step: "1", title: "Build a Solution", desc: "Teams collaborate to solve a real problem on Collabra.", icon: "🔨" },
-              { step: "2", title: "Publish to Marketplace", desc: "List your completed solution with pricing and features.", icon: "📦" },
-              { step: "3", title: "Others License It", desc: "Schools, NGOs, and companies pay monthly to use your solution.", icon: "🤝" },
-              { step: "4", title: "Revenue Flows", desc: "70% to builders, 20% to Collabra, 10% to the problem creator.", icon: "💰" },
+              { step: "1", title: t.marketplace.step1Title, desc: t.marketplace.step1Desc, icon: "🔨" },
+              { step: "2", title: t.marketplace.step2Title, desc: t.marketplace.step2Desc, icon: "📦" },
+              { step: "3", title: t.marketplace.step3Title, desc: t.marketplace.step3Desc, icon: "🤝" },
+              { step: "4", title: t.marketplace.step4Title, desc: t.marketplace.step4Desc, icon: "💰" },
             ].map((item) => (
               <div key={item.step} className="text-center">
                 <div className="text-3xl mb-3">{item.icon}</div>

@@ -62,13 +62,13 @@ export default function ShowcasePage() {
           <div className="text-center text-gray-500 py-20">{t.common.loading}</div>
         ) : projects.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-gray-500 text-lg">No completed projects yet.</p>
-            <p className="text-gray-400 mt-2">Be the first to ship a solution!</p>
+            <p className="text-gray-500 text-lg">{t.showcase.noCompleted}</p>
+            <p className="text-gray-400 mt-2">{t.showcase.beFirstToShip}</p>
             <Link
               href="/explore"
               className="inline-block mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition"
             >
-              Explore Problems
+              {t.showcase.exploreProblems}
             </Link>
           </div>
         ) : (
@@ -93,7 +93,7 @@ export default function ShowcasePage() {
                             {project.problem.category}
                           </span>
                           <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-green-100 text-green-700">
-                            Completed
+                            {t.showcase.completed}
                           </span>
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900">{project.problem.title}</h2>
@@ -101,7 +101,7 @@ export default function ShowcasePage() {
 
                         {project.description && (
                           <div className="mt-4 bg-indigo-50 border border-indigo-100 rounded-lg p-4">
-                            <p className="text-sm font-medium text-indigo-900 mb-1">The Solution</p>
+                            <p className="text-sm font-medium text-indigo-900 mb-1">{t.showcase.solution}</p>
                             <p className="text-sm text-indigo-700">{project.description}</p>
                           </div>
                         )}
@@ -205,7 +205,7 @@ export default function ShowcasePage() {
                           href={`/projects/${project.id}`}
                           className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition"
                         >
-                          View Details
+                          {t.showcase.viewDetails}
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -223,9 +223,9 @@ export default function ShowcasePage() {
       {/* CTA */}
       <section className="bg-indigo-600 text-white">
         <div className="max-w-3xl mx-auto px-4 py-16 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Want to build something that matters?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">{t.showcase.ctaTitle}</h2>
           <p className="text-indigo-200 mb-8">
-            Join Collabra and turn real problems into real solutions.
+            {t.showcase.ctaSubtitle}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
@@ -238,7 +238,7 @@ export default function ShowcasePage() {
               href="/#request-invite"
               className="border border-white/30 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition"
             >
-              Request an Invite
+              {t.showcase.requestInvite}
             </a>
           </div>
         </div>

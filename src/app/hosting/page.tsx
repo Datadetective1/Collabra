@@ -332,7 +332,7 @@ export default function HostingPage() {
                         );
                       })}
                       {listing.licenses.length === 0 && (
-                        <div className="px-6 py-8 text-center text-gray-400 text-sm">No instances yet</div>
+                        <div className="px-6 py-8 text-center text-gray-400 text-sm">{t.hosting.noInstances}</div>
                       )}
                     </div>
                   )}

@@ -59,7 +59,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">{t.auth.registerTitle}</h1>
-          <p className="text-sm text-gray-500 text-center mb-8">Invite-only access for early builders</p>
+          <p className="text-sm text-gray-500 text-center mb-8">{t.auth.registerSubtitle}</p>
 
           {error && (
             <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-6">{error}</div>
@@ -115,11 +115,11 @@ export default function RegisterPage() {
                 onChange={(e) => update("role", e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
               >
-                <option value="builder">Developer / Builder</option>
-                <option value="designer">Designer</option>
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option>
-                <option value="problem_creator">Problem Creator</option>
+                <option value="builder">{t.auth.roleDeveloper}</option>
+                <option value="designer">{t.auth.roleDesigner}</option>
+                <option value="student">{t.auth.roleStudent}</option>
+                <option value="teacher">{t.auth.roleTeacher}</option>
+                <option value="problem_creator">{t.auth.roleProblemCreator}</option>
               </select>
             </div>
             <button

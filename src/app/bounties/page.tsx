@@ -101,7 +101,7 @@ export default function BountiesPage() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{bounties.filter((b) => b.bountyStatus === "awarded").length}</div>
-              <div className="text-amber-200 text-sm mt-1">Awarded</div>
+              <div className="text-amber-200 text-sm mt-1">{t.bounties.awarded}</div>
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function BountiesPage() {
                 <label className="block text-xs font-medium text-gray-600 mb-1">{t.bounties.sponsorName}</label>
                 <input type="text" value={form.sponsorName} onChange={(e) => setForm((p) => ({ ...p, sponsorName: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none"
-                  placeholder="Your org name (optional)" />
+                  placeholder={t.bounties.sponsorPlaceholder} />
               </div>
             </div>
             <div>
@@ -148,12 +148,12 @@ export default function BountiesPage() {
                 <label className="block text-xs font-medium text-gray-600 mb-1">{t.problems.category}</label>
                 <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 outline-none">
-                  <option value="health">Health</option>
-                  <option value="education">Education</option>
-                  <option value="environment">Environment</option>
-                  <option value="agriculture">Agriculture</option>
-                  <option value="employment">Employment</option>
-                  <option value="general">General</option>
+                  <option value="health">{t.problems.categories.health}</option>
+                  <option value="education">{t.problems.categories.education}</option>
+                  <option value="environment">{t.problems.categories.environment}</option>
+                  <option value="agriculture">{t.problems.categories.agriculture}</option>
+                  <option value="employment">{t.problems.categories.employment}</option>
+                  <option value="general">{t.problems.categories.general}</option>
                 </select>
               </div>
               <div>
@@ -195,7 +195,7 @@ export default function BountiesPage() {
                     {bounty.bountySubmissions.length > 0 && (
                       <div className="mt-4">
                         <p className="text-xs font-medium text-gray-500 mb-2">
-                          {bounty.bountySubmissions.length} submission{bounty.bountySubmissions.length !== 1 ? "s" : ""}
+                          {bounty.bountySubmissions.length} {t.bounties.submissions}
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {bounty.bountySubmissions.map((sub) => (
@@ -213,7 +213,7 @@ export default function BountiesPage() {
                   {/* Bounty amount */}
                   <div className="text-right">
                     <div className="text-2xl font-bold text-amber-600">${bounty.bountyAmount.toLocaleString()}</div>
-                    <div className="text-xs text-gray-500 mt-1">bounty</div>
+                    <div className="text-xs text-gray-500 mt-1">{t.bounties.bountyLabel}</div>
                     {bounty.bountyStatus === "open" && session && (
                       <button
                         onClick={() => setSubmitForm({ problemId: bounty.id, content: "" })}
@@ -247,7 +247,7 @@ export default function BountiesPage() {
 
           {bounties.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-gray-500">No bounties yet. Be the first to post one!</p>
+              <p className="text-gray-500">{t.bounties.noBounties}</p>
             </div>
           )}
         </div>
